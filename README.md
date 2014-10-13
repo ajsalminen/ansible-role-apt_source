@@ -1,6 +1,9 @@
 Apt sources
 =========
 
+[![Build Status](https://travis-ci.org/ajsalminen/ansible-role-apt_sources.svg?branch=master)](https://travis-ci.org/ajsalminen/ansible-role-apt_sources)
+
+
 This role can be used to manage Apt package sources. It supports both regular
 Debian and Ubuntu's PPA sources. The role provides an easy way to only pick the
 packages you want to take priority over the ones in the base release via Apt

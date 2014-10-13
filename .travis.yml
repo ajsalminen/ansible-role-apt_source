@@ -1,0 +1,18 @@
+---
+language: python
+python: "2.7"
+
+env:
+  - INVENTORY=tests/inventory
+
+before_install:
+  - sudo apt-get update -qq
+
+install:
+  - pip install ansible
+
+  # Add ansible.cfg to pick up roles path.
+  - "printf '[defaults]\nroles_path = ../' > ansible.cfg"
+
+before_script: ln -s $TRAVIS_BUILD_DIR ../ajsalminen.apt_source
+script: ./tests/test.sh

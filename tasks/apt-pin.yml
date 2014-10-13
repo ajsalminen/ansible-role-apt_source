@@ -1,0 +1,24 @@
+---
+
+- name: Override vars for PPAs.
+  include_vars: ppa.yml
+  when: apt_source_source_string.startswith("ppa:")
+
+
+# see apt_preferences manpage. 200 is a good choice because it means lower
+# than the default repo priority (500) but higher than installed (100) so
+# when a package from the source is installed, it will still get upgraded.
+- name: Set repo packages to low priority.
+  template:
+    src: preferences.j2
+    dest: "{{ apt_source_preferences_file }}"
+    owner: root
+    group: root
+    mode: 0644
+  when: apt_source_state != "absent"
+
+- name: Remove package pins.
+  file:
+    path: "{{ apt_source_preferences_file }}"
+    state: absent
+  when: apt_source_state == "absent"

@@ -1,0 +1,9 @@
+---
+# tasks file for debian_repo
+
+- include: apt-key.yml
+  when: not apt_source_source_string.startswith("ppa:")
+
+- include: apt-repo.yml
+
+- include: apt-pin.yml

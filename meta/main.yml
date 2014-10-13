@@ -1,0 +1,19 @@
+---
+galaxy_info:
+  author: Antti Salminen
+  description:
+  company: Libraries.fi / Helsinki City Library
+  license: MIT
+  min_ansible_version: 1.6
+  platforms:
+  - name: Ubuntu
+    versions:
+    - all
+  - name: Debian
+    versions:
+    - all
+  categories:
+  - packaging
+  - system
+dependencies: []
+allow_duplicates: yes

@@ -1,0 +1,32 @@
+---
+- hosts: default
+  remote_user: root
+  roles:
+    - role: ajsalminen.apt_source
+      apt_source_url: http://ppa.launchpad.net/nginx/stable/ubuntu
+      apt_source_components: main
+      apt_source_key:
+        url: http://keyserver.ubuntu.com:11371/pks/lookup?op=get&search=0x00A6F0A3C300EE8C
+        id: C300EE8C
+      apt_source_packages:
+        - pattern: '*nginx*'
+      tags: normal_source
+    - role: ajsalminen.apt_source
+      apt_source_url: http://ppa.launchpad.net/nginx/stable/ubuntu
+      apt_source_components: main
+      apt_source_key:
+        url: http://keyserver.ubuntu.com:11371/pks/lookup?op=get&search=0x00A6F0A3C300EE8C
+        id: C300EE8C
+      apt_source_state: absent
+      tags: remove_normal
+    - role: ajsalminen.apt_source
+      apt_source_source_string: ppa:nginx/stable
+      apt_source_packages:
+        - pattern: '*nginx*'
+      tags: ppa_source
+    - role: ajsalminen.apt_source
+      apt_source_source_string: ppa:nginx/stable
+      apt_source_packages:
+        - pattern: '*nginx*'
+      apt_source_state: absent
+      tags: remove_ppa

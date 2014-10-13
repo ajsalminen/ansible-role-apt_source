@@ -1,0 +1,3 @@
+---
+apt_source_preferences_file: "/etc/apt/preferences.d/{{ apt_source_source_string|regex_replace('(\\:|/)','_') }}.preferences"
+apt_source_source_selector: release o=LP-PPA{{ apt_source_source_string|regex_replace('(^ppa:|/)','-') }}

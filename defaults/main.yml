@@ -1,7 +1,11 @@
 ---
+apt_source_preferences_dir: /etc/apt/preferences.d
+apt_source_preferences_name: "{{ apt_source_release_origin|regex_replace('(\\.|/)','_') }}_{{ apt_source_distribution }}"
+apt_source_preferences_filepath: "{{ apt_source_preferences_dir }}/200_{{ apt_source_preferences_name }}_"
 apt_source_default_pin:
   - pattern: "*"
     priority: 200
+    filepath: "{{ apt_source_preferences_dir }}/100_{{ apt_source_preferences_name }}"
 apt_source_packages:
   - pattern: "*php5*"
 apt_source_high_priority: 500
@@ -11,7 +15,6 @@ apt_source_release_origin: "{{ apt_source_url|regex_replace('^.*?://', '') }}"
 apt_source_distribution: "{{ansible_lsb.codename}}"
 apt_source_components: all
 apt_source_source_string: "deb {{apt_source_url}} {{apt_source_distribution}} {{apt_source_components}}"
-apt_source_preferences_file: "/etc/apt/preferences.d/{{ apt_source_release_origin|regex_replace('(\\.|/)','_') }}_{{ apt_source_distribution }}.preferences"
 apt_source_source_selector: "release o={{apt_source_release_origin}}"
 apt_source_key:
   url: http://www.dotdeb.org/dotdeb.gpg

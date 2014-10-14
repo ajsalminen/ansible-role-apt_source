@@ -1,6 +1,3 @@
-{% for package in apt_source_default_pin|union(apt_source_packages) %}
-Package:  {{package.pattern}}
+Package:  {{item.pattern}}
 Pin: {{apt_source_source_selector}}
-Pin-Priority: {{ package.priority|default(apt_source_high_priority) }}
-
-{% endfor %}
+Pin-Priority: {{ item.priority|default(apt_source_high_priority) }}

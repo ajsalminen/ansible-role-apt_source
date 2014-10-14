@@ -10,6 +10,7 @@
         id: C300EE8C
       apt_source_packages:
         - pattern: '*nginx*'
+        - pattern: '*plingplong*'
       tags: normal_source
     - role: ajsalminen.apt_source
       apt_source_url: http://ppa.launchpad.net/nginx/stable/ubuntu
@@ -17,6 +18,20 @@
       apt_source_key:
         url: http://keyserver.ubuntu.com:11371/pks/lookup?op=get&search=0x00A6F0A3C300EE8C
         id: C300EE8C
+      apt_source_packages:
+        - pattern: '*nginx*'
+          absent: True
+        - pattern: '*plingplong*'
+      tags: remove_pins
+    - role: ajsalminen.apt_source
+      apt_source_url: http://ppa.launchpad.net/nginx/stable/ubuntu
+      apt_source_components: main
+      apt_source_key:
+        url: http://keyserver.ubuntu.com:11371/pks/lookup?op=get&search=0x00A6F0A3C300EE8C
+        id: C300EE8C
+      apt_source_packages:
+        - pattern: '*nginx*'
+        - pattern: '*plingplong*'
       apt_source_state: absent
       tags: remove_normal
     - role: ajsalminen.apt_source

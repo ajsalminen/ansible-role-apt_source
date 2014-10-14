@@ -11,14 +11,30 @@
 - name: Set repo packages to low priority.
   template:
     src: preferences.j2
-    dest: "{{ apt_source_preferences_file }}"
+    dest: "{{ item.filepath|default(apt_source_preferences_filepath) }}{{ item.pattern|regex_replace('[^A-Za-z0-9]', '')}}"
     owner: root
     group: root
     mode: 0644
+  # debug: var=item
+  with_items:
+    - "{{ apt_source_default_pin }}"
+    - "{{ apt_source_packages }}"
   when: apt_source_state != "absent"
 
 - name: Remove package pins.
   file:
-    path: "{{ apt_source_preferences_file }}"
+    path: "{{ item.filepath|default(apt_source_preferences_filepath) }}{{ item.pattern|regex_replace('[^A-Za-z0-9]', '')}}"
     state: absent
+  with_items:
+    - "{{ apt_source_default_pin }}"
+    - "{{ apt_source_packages }}"
   when: apt_source_state == "absent"
+
+- name: Remove package pins (source kept).
+  file:
+    path: "{{ item.filepath|default(apt_source_preferences_filepath) }}{{ item.pattern|regex_replace('[^A-Za-z0-9]', '')}}"
+    state: absent
+  when: apt_source_state != "absent" and item.absent is defined
+  with_items:
+    - "{{ apt_source_default_pin }}"
+    - "{{ apt_source_packages }}"

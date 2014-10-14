@@ -44,10 +44,14 @@ as accepted by the apt_key module.
 
       apt_source_packages:
         - pattern: '*nginx*'
+          absent: True
+          filepath: /etc/apt/preferences.d/my_custom_file
 
 A list of patterns for packages that should get the priority defined by
 apt_source_high_priority. This for making the desired packages the primary
-candidate for installation by apt.
+candidate for installation by apt. If absent is set, the pin will be removed.
+The filepath can also be set if the defaults don't work because of overlapping
+pins for example.
 
      apt_source_source_selector: "release o={{apt_source_release_origin}}"
 
@@ -58,7 +62,7 @@ default value is o=repo.varnish-cache.org. Check with apt-cache policy.
 
      apt_source_state: absent
 
-To remove a package source, set this parameter.
+To remove a package source completely, set this parameter.
 
      apt_source_high_priority: 500
 
@@ -68,6 +72,7 @@ apt_source_packages.
      apt_source_default_pin:
        - pattern: "*"
          priority: 200
+         filepath: "{{ apt_source_preferences_dir }}/100_{{ apt_source_preferences_name }}"
 
 The default pin priority set for all packages in the source. You could change
 this to pin them all to a different priority.

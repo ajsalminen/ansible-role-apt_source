@@ -87,6 +87,8 @@ Example Playbook
           apt_source_key:
             url: http://www.dotdeb.org/dotdeb.gpg
             id: 89DF5277
+          apt_source_packages:
+            - pattern: '*nginx*'
 
 License
 -------

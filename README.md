@@ -1,4 +1,4 @@
-Apt sources
+Apt source
 =========
 
 [![Build Status](https://travis-ci.org/ajsalminen/ansible-role-apt_sources.svg?branch=master)](https://travis-ci.org/ajsalminen/ansible-role-apt_sources)
@@ -82,13 +82,14 @@ Example Playbook
 
     - hosts: servers
       roles:
-          apt_source_url: http://packages.dotdeb.org
-          apt_source_components: all
-          apt_source_key:
-            url: http://www.dotdeb.org/dotdeb.gpg
-            id: 89DF5277
-          apt_source_packages:
-            - pattern: '*nginx*'
+          - role: ajsalminen.apt_source
+                apt_source_url: http://packages.dotdeb.org
+                apt_source_components: all
+                apt_source_key:
+                    url: http://www.dotdeb.org/dotdeb.gpg
+                    id: 89DF5277
+                apt_source_packages:
+                    - pattern: '*nginx*'
 
 License
 -------

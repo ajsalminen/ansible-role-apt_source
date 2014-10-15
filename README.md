@@ -1,7 +1,7 @@
 Apt source
 =========
 
-[![Build Status](https://travis-ci.org/ajsalminen/ansible-role-apt_sources.svg?branch=master)](https://travis-ci.org/ajsalminen/ansible-role-apt_sources)
+[![Build Status](https://travis-ci.org/ajsalminen/ansible-role-apt_source.svg?branch=master)](https://travis-ci.org/ajsalminen/ansible-role-apt_source)
 
 
 This role can be used to manage Apt package sources. It supports both regular

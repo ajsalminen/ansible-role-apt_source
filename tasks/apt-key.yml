@@ -1,15 +1,15 @@
 ---
 - name: Apt key (url).
   apt_key:
-    url: "{{ apt_source_key.url }}"
-    id: "{{ apt_source_key.id }}"
-    state: "{{ apt_source_state }}"
-  when: apt_source_key.url is defined
+    url: "{{ apt_source_config.0.key.url }}"
+    id: "{{ apt_source_config.0.key.id }}"
+    state: "{{ apt_source_config.0.state|default('present') }}"
+  when: apt_source_config.0.key.url is defined
 
 
 - name: Apt key (keyserver).
   apt_key:
-    keyserver: "{{apt_source_key.keyserver}}"
-    id: "{{apt_source_key.id}}"
-    state: "{{ apt_source_state }}"
-  when: apt_source_key.keyserver is defined
+    keyserver: "{{apt_source_config.0.key.keyserver}}"
+    id: "{{apt_source_config.0.key.id}}"
+    state: "{{ apt_source_config.0.state|default('present') }}"
+  when: apt_source_config.0.key.keyserver is defined

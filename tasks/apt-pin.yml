@@ -2,7 +2,8 @@
 
 - name: Override vars for PPAs.
   include_vars: ppa.yml
-  when: apt_source_source_string.startswith("ppa:")
+  when: apt_source_config.0.source_string is defined
+    and not apt_source_config.0.source_string.startswith("ppa:")
 
 
 # see apt_preferences manpage. 200 is a good choice because it means lower
@@ -18,8 +19,9 @@
   # debug: var=item
   with_items:
     - "{{ apt_source_default_pin }}"
-    - "{{ apt_source_packages }}"
-  when: apt_source_state != "absent"
+    - "{{ apt_source_config.0.packages }}"
+  when: apt_source_state != "absent" and
+        item.absent is not defined
 
 - name: Remove package pins.
   file:
@@ -27,14 +29,16 @@
     state: absent
   with_items:
     - "{{ apt_source_default_pin }}"
-    - "{{ apt_source_packages }}"
-  when: apt_source_state == "absent"
+    - "{{ apt_source_config.0.packages }}"
+  when: apt_source_config.0.state is defined and
+        apt_source_config.0.state == 'absent'
 
 - name: Remove package pins (source kept).
   file:
     path: "{{ item.filepath|default(apt_source_preferences_filepath) }}{{ item.pattern|regex_replace('[^A-Za-z0-9]', '')}}"
     state: absent
-  when: apt_source_state != "absent" and item.absent is defined
+  when: (apt_source_config.0.state is not defined or
+        apt_source_config.0.state != "absent") and item.absent is defined
   with_items:
     - "{{ apt_source_default_pin }}"
-    - "{{ apt_source_packages }}"
+    - "{{ apt_source_config.0.packages }}"

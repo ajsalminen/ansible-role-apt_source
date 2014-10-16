@@ -2,7 +2,8 @@
 # tasks file for debian_repo
 
 - include: apt-key.yml
-  when: not apt_source_source_string.startswith("ppa:")
+  when: apt_source_config.0.source_string is defined
+    and not apt_source_config.0.source_string.startswith("ppa:")
 
 - include: apt-repo.yml
 

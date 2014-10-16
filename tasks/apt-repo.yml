@@ -2,8 +2,8 @@
 
     - name: APT repository.
       apt_repository:
-        repo: "{{apt_source_source_string}}"
-        state: "{{ apt_source_state }}"
+        repo: "{{apt_source_config.0.source}}"
+        state: "{{ apt_source_config.0.state|default('present') }}"
 
    # Update APT package lists
     - apt: update_cache=yes

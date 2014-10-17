@@ -17,32 +17,23 @@ python-apt has to be present on the server.
 Role Variables
 --------------
 
-      apt_source_url: http://packages.dotdeb.org
+apt_source_config:
 
-The URL of the package source.
+A list of dicts. Only supports a single item for now. The apt source is defined
+in the item and has the key/value pairs described below.
 
-      apt_source_components: all
+      source: deb http://ppa.launchpad.net/nginx/stable/ubuntu {{ansible_lsb.codename}} main
 
-List of components (such as "main contrib") from the source.
+A complete Debian package source string or a ppa name.
 
-     apt_source_distribution: "{{ansible_lsb.codename}}"
-
-The distribution (such as "wheezy") of the package source. Usually the default of
-ansible_lsb.codename will give desired results.
-
-      apt_source_source_string: ppa:nginx/stable
-
-The source string can be defined by setting this variable. This is used instead
-of apt_source_url, apt_source_components etc. when adding a PPA.
-
-      apt_source_key:
+      key:
         url: http://www.dotdeb.org/dotdeb.gpg
         id: 89DF5277
 
 A dict containing the URL and ID of the public key associated with the source
 as accepted by the apt_key module.
 
-      apt_source_packages:
+      packages:
         - pattern: '*nginx*'
           absent: True
           filepath: /etc/apt/preferences.d/my_custom_file
@@ -83,13 +74,13 @@ Example Playbook
     - hosts: servers
       roles:
           - role: ajsalminen.apt_source
-                apt_source_url: http://packages.dotdeb.org
-                apt_source_components: all
-                apt_source_key:
-                    url: http://www.dotdeb.org/dotdeb.gpg
-                    id: 89DF5277
-                apt_source_packages:
-                    - pattern: '*nginx*'
+            apt_source_config:
+                - source: deb http://ppa.launchpad.net/nginx/stable/ubuntu {{ansible_lsb.codename}} main
+                   key:
+                        url: http://keyserver.ubuntu.com:11371/pks/lookup?op=get&search=0x00A6F0A3C300EE8C
+                        id: C300EE8C
+                   packages:
+                        - pattern: '*nginx*'
 
 License
 -------

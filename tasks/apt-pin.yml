@@ -20,7 +20,9 @@
   with_items:
     - "{{ apt_source_default_pin }}"
     - "{{ apt_source_config.0.packages }}"
-  when: apt_source_state != "absent" and
+  when:
+        apt_source_state != "absent" and
+        item.pattern is defined and
         item.absent is not defined
 
 - name: Remove package pins.
@@ -31,14 +33,16 @@
     - "{{ apt_source_default_pin }}"
     - "{{ apt_source_config.0.packages }}"
   when: apt_source_config.0.state is defined and
-        apt_source_config.0.state == 'absent'
+        apt_source_config.0.state == 'absent' and
+        item.pattern is defined
 
 - name: Remove package pins (source kept).
   file:
     path: "{{ item.filepath|default(apt_source_preferences_filepath) }}{{ item.pattern|regex_replace('[^A-Za-z0-9]', '')}}"
     state: absent
   when: (apt_source_config.0.state is not defined or
-        apt_source_config.0.state != "absent") and item.absent is defined
+        apt_source_config.0.state != "absent") and item.absent is defined and
+        item.pattern is defined
   with_items:
     - "{{ apt_source_default_pin }}"
     - "{{ apt_source_config.0.packages }}"

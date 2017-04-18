@@ -8,7 +8,7 @@ apt_source_default_pin:
     filepath: "{{ apt_source_preferences_dir }}/100_{{ apt_source_preferences_name }}"
 apt_source_high_priority: 500
 # This only strips the protocol so override as needed.
-apt_source_release_origin: "{{ apt_source_config.0.source|regex_replace('^(deb.*?://)(\\w+.*?)(\\s.*)$', '\\2') }}"
+apt_source_release_origin: "{{ apt_source_config.0.source|regex_replace('^(?:deb.*?://)([\\w\\.\\-]+)(?:.*)$', '\\1') }}"
 # apt_source_distribution: "{{ansible_lsb.codename}}"
 # apt_source_default_source_string: "deb {{apt_source_config.0.url}} {{apt_source_distribution}} {{apt_source_config.0.components}}"
 apt_source_source_selector: "release o={{apt_source_release_origin}}"

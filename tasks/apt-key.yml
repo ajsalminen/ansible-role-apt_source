@@ -4,7 +4,9 @@
     url: "{{ apt_source_config.0.key.url }}"
     id: "{{ apt_source_config.0.key.id }}"
     state: "{{ apt_source_config.0.state|default('present') }}"
-  when: apt_source_config.0.key.url is defined
+  when:
+    - apt_source_config.0.key is defined
+    - apt_source_config.0.key.url is defined
 
 
 - name: Apt key (keyserver).
@@ -12,4 +14,6 @@
     keyserver: "{{apt_source_config.0.key.keyserver}}"
     id: "{{apt_source_config.0.key.id}}"
     state: "{{ apt_source_config.0.state|default('present') }}"
-  when: apt_source_config.0.key.keyserver is defined
+  when:
+    - apt_source_config.0.key is defined
+    - apt_source_config.0.key.keyserver is defined

@@ -1,5 +1,21 @@
 ---
-# tasks file for debian_repo
+# tasks file for apt_sources
+
+# This only strips the protocol so override as needed.
+- name: default value for apt_source_release_origin
+  set_fact:
+    apt_source_release_origin: "{{ apt_source_config.0.source|regex_replace('^deb.*?://([\\w\\.\\-]+).*$', '\\1') }}"
+  when: apt_source_release_origin is undefined
+
+- name: set facts based on role vars.
+  set_fact:
+    apt_source_preferences_name: "{{ apt_source_release_origin|regex_replace('(\\\\.|/|\\s)','_') }}_{{ ansible_lsb.codename }}"
+    apt_source_preferences_filepath: "{{ apt_source_preferences_dir }}/200_{{ apt_source_preferences_name }}_"
+    apt_source_default_pin:
+      - pattern: "*"
+        priority: 200
+        filepath: "{{ apt_source_preferences_dir }}/100_{{ apt_source_preferences_name }}"
+    apt_source_source_selector: "origin {{apt_source_release_origin}}"
 
 - include: apt-key.yml
   when: apt_source_config.0.source is defined

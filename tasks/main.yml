@@ -1,34 +1,8 @@
 ---
-# tasks file for apt_sources
+# tasks file for apt_source
 
-# This only strips the protocol so override as needed.
-- name: default value for apt_source_release_origin
-  set_fact:
-    apt_source_release_origin: "{{ apt_source_config.0.source|regex_replace('^deb.*?://([\\w\\.\\-]+).*$', '\\1') }}"
-  when: apt_source_release_origin is undefined
-
-- name: default value for apt_source_preferences_name
-  set_fact:
-    apt_source_preferences_name: "{{ apt_source_release_origin|regex_replace('(\\\\.|/|\\s)','_') }}_{{ ansible_lsb.codename }}"
-  when: apt_source_preferences_name is undefined
-
-- name: default value for apt_source_preferences_filepath
-  set_fact:
-    apt_source_preferences_filepath: "{{ apt_source_preferences_dir }}/200_{{ apt_source_preferences_name }}_"
-  when: apt_source_preferences_filepath is undefined
-
-- name: default value for apt_source_default_pin
-  set_fact:
-    apt_source_default_pin:
-      - pattern: "*"
-        priority: 200
-        filepath: "{{ apt_source_preferences_dir }}/100_{{ apt_source_preferences_name }}"
-  when: apt_source_default_pin is undefined
-
-- name: default value for apt_source_source_selector
-  set_fact:
-    apt_source_source_selector: "origin {{apt_source_release_origin}}"
-  when: apt_source_source_selector is undefined
+- name: Include default variables
+  include_vars: defaults.yml
 
 - include: apt-key.yml
   when: apt_source_config.0.source is defined

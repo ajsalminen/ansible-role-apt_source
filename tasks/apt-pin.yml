@@ -8,10 +8,10 @@
 
 - name: Remove old pin files that do not have a .pref suffix.
   file:
-    path: "{{ item.filepath|default(apt_source_preferences_filepath) }}{{ item.pattern|regex_replace('[^A-Za-z0-9]', '')}}"
+    path: "{{ item.filepath|default(__apt_source_preferences_filepath) }}{{ item.pattern|regex_replace('[^A-Za-z0-9]', '')}}"
     state: absent
   with_items:
-    - "{{ apt_source_default_pin }}"
+    - "{{ __apt_source_default_pin }}"
     - "{{ apt_source_config.0.packages }}"
   when:
     item.pattern is defined
@@ -24,13 +24,13 @@
 - name: Set repo packages to low priority.
   template:
     src: preferences.j2
-    dest: "{{ item.filepath|default(apt_source_preferences_filepath) }}{{ item.pattern|regex_replace('[^A-Za-z0-9]', '')}}.pref"
+    dest: "{{ item.filepath|default(__apt_source_preferences_filepath) }}{{ item.pattern|regex_replace('[^A-Za-z0-9]', '')}}.pref"
     owner: root
     group: root
     mode: 0644
   # debug: var=item
   with_items:
-    - "{{ apt_source_default_pin }}"
+    - "{{ __apt_source_default_pin }}"
     - "{{ apt_source_config.0.packages }}"
   when:
         apt_source_state != "absent" and
@@ -39,10 +39,10 @@
 
 - name: Remove package pins.
   file:
-    path: "{{ item.filepath|default(apt_source_preferences_filepath) }}{{ item.pattern|regex_replace('[^A-Za-z0-9]', '')}}"
+    path: "{{ item.filepath|default(__apt_source_preferences_filepath) }}{{ item.pattern|regex_replace('[^A-Za-z0-9]', '')}}"
     state: absent
   with_items:
-    - "{{ apt_source_default_pin }}"
+    - "{{ __apt_source_default_pin }}"
     - "{{ apt_source_config.0.packages }}"
   when: apt_source_config.0.state is defined and
         apt_source_config.0.state == 'absent' and
@@ -50,11 +50,11 @@
 
 - name: Remove package pins (source kept).
   file:
-    path: "{{ item.filepath|default(apt_source_preferences_filepath) }}{{ item.pattern|regex_replace('[^A-Za-z0-9]', '')}}"
+    path: "{{ item.filepath|default(__apt_source_preferences_filepath) }}{{ item.pattern|regex_replace('[^A-Za-z0-9]', '')}}"
     state: absent
   when: (apt_source_config.0.state is not defined or
         apt_source_config.0.state != "absent") and item.absent is defined and
         item.pattern is defined
   with_items:
-    - "{{ apt_source_default_pin }}"
+    - "{{ __apt_source_default_pin }}"
     - "{{ apt_source_config.0.packages }}"

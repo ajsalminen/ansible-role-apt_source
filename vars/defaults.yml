@@ -1,0 +1,24 @@
+---
+
+# These vars are included *after* role parameters so that they can use them for templating.
+# That is why they cannot be in defaults/main.yml.
+# Variables are prefixed with __ to work around 'recursive loop detected in template string' error in Ansible.
+
+# This only strips the protocol so override as needed.
+__apt_source_release_origin_default: "{{ apt_source_config.0.source|regex_replace('^deb.*?://([\\w\\.\\-]+).*$', '\\1') }}"
+__apt_source_release_origin: "{{ apt_source_release_origin | default(__apt_source_release_origin_default) }}"
+
+__apt_source_preferences_name_default: "{{ __apt_source_release_origin|regex_replace('(\\\\.|/|\\s)','_') }}_{{ ansible_lsb.codename }}"
+__apt_source_preferences_name: "{{ apt_source_preferences_name | default(__apt_source_preferences_name_default) }}"
+
+__apt_source_preferences_filepath_default: "{{ apt_source_preferences_dir }}/200_{{ __apt_source_preferences_name }}_"
+__apt_source_preferences_filepath: "{{ apt_source_preferences_filepath | default(__apt_source_preferences_filepath_default) }}"
+
+__apt_source_default_pin_default:
+  - pattern: "*"
+    priority: 200
+    filepath: "{{ apt_source_preferences_dir }}/100_{{ __apt_source_preferences_name }}"
+__apt_source_default_pin: "{{ apt_source_default_pin | default(__apt_source_default_pin_default) }}"
+
+__apt_source_source_selector_default: "origin {{__apt_source_release_origin}}"
+__apt_source_source_selector: "{{ apt_source_source_selector | default(__apt_source_source_selector_default) }}"

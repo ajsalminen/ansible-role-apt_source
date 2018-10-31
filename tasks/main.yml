@@ -1,8 +1,5 @@
 ---
-# tasks file for apt_source
-
-- name: Include default variables
-  include_vars: defaults.yml
+# tasks file for debian_repo
 
 - include: apt-key.yml
   when: apt_source_config.0.source is defined
